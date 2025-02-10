@@ -44,7 +44,7 @@ Este é um sistema baseado em **Flask** e **Ultralytics** **YOLO** que permite d
 Abra o terminal e execute:
 
 ```bash
-git clone https://github.com/seu-usuario/detector-objetos-cortantes.git
+git clone https://github.com/lgcarvalho/Hackaton-Fase5.git
 cd detector-objetos-cortantes
 ```
 
