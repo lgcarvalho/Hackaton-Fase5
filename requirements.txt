@@ -2,3 +2,6 @@ Flask
 opencv-python
 ultralytics 
 numpy
+torch
+torchaudio
+torchvision

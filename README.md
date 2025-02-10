@@ -27,6 +27,14 @@ A empresa tem o objetivo de validar a viabilidade dessa feature, e para isso ser
 
 Este é um sistema baseado em **Flask** e **Ultralytics** **YOLO** que permite detectar objetos cortantes em vídeos e em tempo real via webcam. Ele utiliza o modelo **YOLOv11n,** treinado com 7 mil novas imagens, para detecção, exibindo os resultados de forma interativa via interface web.
 
+Para uma inferência mais rápida e eficiente, recomenda-se a utilização do **PyTorch** para o processamento do modelo YOLO, permitindo um desempenho otimizado e reduzindo o tempo de resposta em aplicações em tempo real.
+
+---
+
+## Instalação do PyTorch
+
+Para saber como instalar no Python e validar a versão do CUDA, acessar o site do [PyTorch](https://pytorch.org/get-started/locally/).
+
 ---
 
 ## Funcionalidades
