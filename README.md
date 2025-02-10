@@ -75,9 +75,9 @@ Entre no ambiente criado executando:
 venv\Scripts\activate
 ```
 
-### 3. Instale o PyTorch
+### 3. Instale o PyTorch (Caso possua placa de vídeo NVIDIA)
 
-Após validar a versão do CUDA instalada no seu ssiteam execute:
+Após validar a versão do CUDA instalada no seu sistema execute:
 
 ```
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/<versao do cuda, exemplo cu121>
