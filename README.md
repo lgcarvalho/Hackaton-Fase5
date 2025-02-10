@@ -83,7 +83,11 @@ Após validar a versão do CUDA que você esta utilizando execute:
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/<versao do cuda, exemplo cu121>
 ```
 
+<<<<<<< HEAD
 ### 4. Instale as dependências
+=======
+### 4.  Execute o sistema
+>>>>>>> 8e2ba84c3bcfb6538761a84c66c275851de526c2
 
 Instale as depedências executando:
 
