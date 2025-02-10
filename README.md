@@ -53,7 +53,7 @@ Abra o terminal e execute:
 
 ```bash
 git clone https://github.com/lgcarvalho/Hackaton-Fase5.git
-cd detector-objetos-cortantes
+cd Hackaton-Fase5
 ```
 
 ### 2. Crie um ambiente virtual e instale as dependências
