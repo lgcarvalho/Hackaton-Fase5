@@ -31,9 +31,11 @@ Para uma inferência mais rápida e eficiente, recomenda-se a utilização do **
 
 ---
 
-## Instalação do PyTorch
+## CPU ou GPU
 
-Para saber como instalar no Python e validar a versão do CUDA, acessar o site do [PyTorch](https://pytorch.org/get-started/locally/).
+Recomendo utilizar uma GPU para rodar o sistema, já que o tempo de inferência é muito menor comparado com a CPU, porém com a CPU também é possível usar tendo que aguardar um tempo maior.
+
+Para saber como instalar o PyTorch no Python, acessar o site do [PyTorch](https://pytorch.org/get-started/locally/).
 
 ---
 
