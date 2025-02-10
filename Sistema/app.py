@@ -35,6 +35,11 @@ app.secret_key = "chave-secreta-para-session-flash"  # Chave para sessões e men
 # Verifica se a GPU está ativa
 gpu_ativa = torch.cuda.is_available()
 
+if gpu_ativa:
+    device = 0
+else:
+    device = "cpu"
+
 # Carrega o modelo YOLO treinado para detecção de objetos
 model = YOLO("model/best.pt")
 
@@ -70,18 +75,19 @@ def process_video():
     seen_track_ids = set()  # Conjunto para armazenar IDs de rastreamento já vistos
 
     # Processa o vídeo utilizando o modelo com rastreamento de objetos
-    results_generator = model.track(
+    results = model.track(
         source=video_path,
         tracker="model/bytetrack.yaml",
         persist=True,
         conf=0.5,
         stream=True,
         augment=True, 
-        half=True
+        half=True,
+        device=device
     )
 
     # Itera sobre cada frame/resultados do vídeo
-    for result in results_generator:
+    for result in results:
         boxes = result.boxes
         
         # Se não houver detecções, passa para o próximo frame
@@ -168,7 +174,8 @@ def webcam_detection_loop():
             conf=0.5,
             stream=True,
             augment=True, 
-            half=True
+            half=True,
+            device=device
         )
 
         results = list(results)  # Converte o gerador de resultados em uma lista
@@ -375,4 +382,4 @@ def analises_json():
 
 # Inicializa o servidor Flask
 if __name__ == "__main__":
-    app.run(debug=True)  # Inicia o servidor Flask em modo debug
+    app.run(debug=False)  # Inicia o servidor Flask em modo debug
