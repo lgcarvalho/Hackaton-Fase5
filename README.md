@@ -75,15 +75,7 @@ Entre no ambiente criado executando:
 venv\Scripts\activate
 ```
 
-### 3. Instale o PyTorch
-
-Após validar a versão do CUDA que você esta utilizando execute:
-
-```
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/<versao do cuda, exemplo cu121>
-```
-
-### 4. Instale as dependências
+### 3. Instale as dependências
 
 Instale as depedências executando:
 
@@ -91,7 +83,7 @@ Instale as depedências executando:
 pip install -r requirements.txt
 ```
 
-### 5.  Execute o sistema
+### 4.  Execute o sistema
 
 Execute o comando a seguir para ir na pasta do sistema:
 
