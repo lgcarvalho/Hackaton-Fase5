@@ -63,7 +63,7 @@ cd Hackaton-Fase5
 
 ### 2. Crie um ambiente virtual
 
-Certifique-se de ter o **Python 3.9+** instalado. Depois, execute:
+Certifique-se de ter o **Python 3.10+** instalado. Depois, execute:
 
 ```bash
 python -m venv venv
@@ -75,7 +75,15 @@ Entre no ambiente criado executando:
 venv\Scripts\activate
 ```
 
-### 3. Instale as dependências
+### 3. Instale o PyTorch
+
+Após validar a versão do CUDA instalada no seu ssiteam execute:
+
+```
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/<versao do cuda, exemplo cu121>
+```
+
+### 4. Instale as dependências
 
 Instale as depedências executando:
 
@@ -83,7 +91,7 @@ Instale as depedências executando:
 pip install -r requirements.txt
 ```
 
-### 4.  Execute o sistema
+### 5.  Execute o sistema
 
 Execute o comando a seguir para ir na pasta do sistema:
 
