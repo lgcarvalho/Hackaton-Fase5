@@ -24,6 +24,22 @@
             background-color: #fff; /* Opcional */
             border-top: 1px solid #ddd;
         }
+        .gpu-status {
+            font-weight: bold;
+            padding: 6px 12px;
+            border-radius: 5px;
+            display: inline-block;
+            text-align: center;
+            margin-right: 15px;
+        }
+        .gpu-active {
+            color: #ffffff;
+            background-color: #28a745; /* Verde */
+        }
+        .gpu-inactive {
+            color: #ffffff;
+            background-color: #dc3545; /* Vermelho */
+        }
     </style>
 </head>
 <body class="bg-light">
@@ -37,7 +53,12 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <span class="gpu-status {% if gpu_ativa %}gpu-active{% else %}gpu-inactive{% endif %}">
+                            {% if gpu_ativa %} GPU Ativa {% else %} GPU Inativa {% endif %}
+                        </span>
+                    </li>
                     <li class="nav-item">
                         <a class="btn btn-outline-primary" href="{{ url_for('lista_analises') }}">Lista de Análises</a>
                     </li>

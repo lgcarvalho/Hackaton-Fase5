@@ -62,10 +62,17 @@ Certifique-se de ter o **Python 3.9+** instalado. Depois, execute:
 
 ```bash
 python -m venv venv
-source venv/bin/activate  # Linux/Mac
-venv\Scripts\activate  # Windows
+venv\Scripts\activate
 
 pip install -r requirements.txt
+```
+
+### 3. Instale o PyTorch
+
+Após validar a versão do CUDA que você esta utilizando execute:
+
+```
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/<versao do cuda, exemplo cu121>
 ```
 
 ### 3.  Execute o sistema
@@ -73,6 +80,7 @@ pip install -r requirements.txt
 Na pasta "Sistema" estão todos os objetos necessários para executar.
 
 ```bash
+cd Sistema
 python app.py
 ```
 

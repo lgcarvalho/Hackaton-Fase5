@@ -4,6 +4,7 @@ import datetime
 import uuid
 import threading
 import time
+import torch
 
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, Response
 from ultralytics import YOLO
@@ -31,13 +32,16 @@ analises = []
 app = Flask(__name__)
 app.secret_key = "chave-secreta-para-session-flash"  # Chave para sessões e mensagens flash
 
+# Verifica se a GPU está ativa
+gpu_ativa = torch.cuda.is_available()
+
 # Carrega o modelo YOLO treinado para detecção de objetos
 model = YOLO("model/best.pt")
 
 # Rota que rendereiza a página inicial
 @app.route("/")
 def index():
-    return render_template("index.html")  # Renderiza a página inicial
+    return render_template("index.html", gpu_ativa=gpu_ativa)  # Renderiza a página inicial
 
 # Rota que recebe um vídeo, processa as detecções, salva a imagem e registra a análise
 @app.route("/process_video", methods=["POST"])
@@ -245,7 +249,7 @@ def process_webcam():
         webcam_thread = threading.Thread(target=webcam_detection_loop, daemon=True)
         webcam_thread.start()
 
-    return render_template("webcam.html")  # Renderiza a página que exibe o feed da webcam
+    return render_template("webcam.html", gpu_ativa=gpu_ativa)  # Renderiza a página que exibe o feed da webcam
 
 # Rota que para a webcam manualmente
 @app.route("/stop_webcam", methods=["POST"])
@@ -286,7 +290,7 @@ def video_feed():
 @app.route("/lista_analises")
 def lista_analises():
     # Renderiza a página que lista as análises realizadas
-    return render_template("lista_analises.html", analises=analises)
+    return render_template("lista_analises.html", analises=analises, gpu_ativa=gpu_ativa)
 
 # Rota que exibe os detalhes de uma análise específica
 @app.route("/detalhe/<analise_id>")
