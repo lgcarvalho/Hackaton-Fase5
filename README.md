@@ -75,7 +75,7 @@ Após validar a versão do CUDA que você esta utilizando execute:
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/<versao do cuda, exemplo cu121>
 ```
 
-### 3.  Execute o sistema
+### 4.  Execute o sistema
 
 Na pasta "Sistema" estão todos os objetos necessários para executar.
 
