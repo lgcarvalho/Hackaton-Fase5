@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+    <!-- Seção de Upload de Vídeo -->
+    <div class="col-md-6 col-12 mb-4">
+        <h2>Enviar Vídeo para Análise</h2>
+        <script>
+        function showLoadingSpinner(event) {
+            const fileInput = document.getElementById("video");
+            if (fileInput.files.length > 0) {
+                document.getElementById("loading-spinner").style.display = "block";
+            } else {
+                event.preventDefault(); // Evita o envio sem arquivo
+                alert("Por favor, selecione um vídeo para análise.");
+            }
+        }
+        </script>
+
+        <!-- Formulário de Envio -->
+        <form action="{{ url_for('process_video') }}" method="POST" enctype="multipart/form-data" onsubmit="showLoadingSpinner(event)">
+            <div class="mb-3">
+                <label for="video" class="form-label">Selecione o Vídeo</label>
+                <input type="file" id="video" name="video" class="form-control" accept="video/*" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Analisar Vídeo</button>
+        </form>
+
+        <!-- Spinner de Carregamento -->
+        <div id="loading-spinner" class="text-center mt-3" style="display:none;">
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="mt-2 text-muted"><strong>Processando vídeo...</strong> Por favor, aguarde.</p>
+        </div>
+    </div>
+
+    <!-- Seção de Análise via Webcam -->
+    <div class="col-md-6 col-12">
+        <h2>Analisar via Webcam</h2>
+        <p class="text-muted">Clique no botão abaixo para iniciar a captura contínua da webcam.</p>
+        <a href="{{ url_for('process_webcam') }}" class="btn btn-success">
+            <i class="bi bi-camera-video"></i> Iniciar Webcam
+        </a>
+    </div>
+</div>
+{% endblock %}

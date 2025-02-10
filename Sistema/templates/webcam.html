@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Detecção em Tempo Real - Webcam</h2>
+
+<!-- Layout em duas colunas -->
+<div class="row">
+  <!-- Feed da Webcam -->
+  <div class="col-md-6">
+    <img src="{{ url_for('video_feed') }}" class="img-fluid border shadow-sm" alt="Feed da Webcam" />
+  </div>
+
+  <!-- Lista de Detecções -->
+  <div class="col-md-6">
+    <h4>Detecções</h4>
+    <div id="loading-spinner" class="text-center">
+      <span class="spinner-border text-primary"></span>
+      <p>Carregando análises...</p>
+    </div>
+    <div id="analisesContainer"></div>
+  </div>
+</div>
+
+<!-- Modal para exibir detalhes da análise -->
+<div class="modal fade" id="detalhesModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Detalhes da Análise</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        <iframe id="detalhesIframe" src="" frameborder="0" style="width:100%; height:500px;"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Botão para parar a webcam -->
+<form action="{{ url_for('stop_webcam') }}" method="POST" id="stopWebcamForm">
+  <button type="submit" class="btn btn-warning mt-3">
+    <i class="bi bi-stop-circle"></i> Parar Webcam
+  </button>
+</form>
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+<!-- Script para atualização dinâmica -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const analisesContainer = document.getElementById("analisesContainer");
+  const loadingSpinner = document.getElementById("loading-spinner");
+
+  function atualizarAnalises() {
+    fetch("{{ url_for('analises_json') }}")
+      .then(res => res.json())
+      .then(lista => {
+        if (lista.length === 0) {
+          analisesContainer.innerHTML = `<p class="text-muted text-center">Nenhuma análise disponível.</p>`;
+          return;
+        }
+
+        let html = `
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Fonte</th>
+                <th>Data</th>
+                <th>Qtd Detecções</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+
+        lista.forEach(a => {
+          if (a.fonte === "WebCam") {
+            html += `
+              <tr>
+                <td>${a.id}</td>
+                <td>${a.fonte}</td>
+                <td>${a.data}</td>
+                <td>${a.qtd_deteccoes}</td>
+                <td>
+                  <button type="button" class="btn btn-info btn-sm detalhes-btn" data-id="${a.id}">
+                    <i class="bi bi-eye"></i> Detalhes
+                  </button>
+                </td>
+              </tr>
+            `;
+          }
+        });
+
+        html += `</tbody></table>`;
+        analisesContainer.innerHTML = html;
+      })
+      .catch(err => console.error("Erro ao atualizar análises:", err))
+      .finally(() => loadingSpinner.style.display = "none");
+  }
+
+  // Event delegation para abrir modal de detalhes
+  analisesContainer.addEventListener("click", function(event) {
+    if (event.target.classList.contains("detalhes-btn")) {
+      abrirDetalhes(event.target.dataset.id);
+    }
+  });
+
+  function abrirDetalhes(analiseId) {
+    document.getElementById("detalhesIframe").src = "/detalhe_popup/" + analiseId;
+    new bootstrap.Modal(document.getElementById("detalhesModal")).show();
+  }
+
+  // Inicia a atualização periódica
+  atualizarAnalises();
+  setInterval(atualizarAnalises, 5000);
+
+  // Enviar requisição para parar a webcam quando a página for fechada
+  window.addEventListener("beforeunload", function() {
+    navigator.sendBeacon("{{ url_for('stop_webcam') }}");
+  });
+});
+</script>
+
+{% endblock %}

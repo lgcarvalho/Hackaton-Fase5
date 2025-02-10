@@ -1,0 +1,7 @@
+
+path: dataset  # caminho para o conjunto de dados
+train: images/train  # diretório de imagens de treinamento
+val: images/test  # diretório de imagens de validação
+
+nc: 6  # número de classes
+names: ['arma', 'celular', 'cortante', 'carteira', 'dinheiro', 'cartao']  # nomes das classes

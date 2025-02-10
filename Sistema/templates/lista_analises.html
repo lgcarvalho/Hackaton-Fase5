@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Lista de Análises</h2>
+
+<!-- Modal para inserir e-mail -->
+<div class="modal fade" id="emailModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form id="formEmail" method="POST">
+        <div class="modal-header">
+          <h5 class="modal-title">Enviar E-mail</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="email_destino" class="form-label">Digite o E-mail:</label>
+            <input type="email" class="form-control" name="email_destino" id="email_destino" required placeholder="exemplo@empresa.com" />
+          </div>
+          <div id="emailLoading" class="text-center text-info" style="display:none;">
+            <span class="spinner-border spinner-border-sm"></span> Enviando...
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Enviar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para exibir detalhes da análise -->
+<div class="modal fade" id="detalhesModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Detalhes da Análise</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        <iframe id="detalhesIframe" src="" frameborder="0" style="width:100%; height:500px;"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tabela de Análises -->
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Status</th>
+      <th>Fonte</th>
+      <th>Data</th>
+      <th>Qtd Detecções</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for a in analises %}
+    <tr>
+      <td>
+        {% if a.qtd_deteccoes > 0 %}
+          <i class="bi bi-exclamation-circle text-danger" title="Detectado"></i>
+        {% else %}
+          <i class="bi bi-check-circle text-success" title="Sem detecções"></i>
+        {% endif %}
+      </td>
+      <td>{{ a.fonte }}</td>
+      <td>{{ a.data }}</td>
+      <td>{{ a.qtd_deteccoes }}</td>
+      <td>
+        <!-- Botão "Detalhes" -->
+        <button type="button" class="btn btn-info btn-sm" onclick="abrirDetalhesPopup('{{ a.id }}')" title="Ver Detalhes">
+          <i class="bi bi-eye"></i> Detalhes
+        </button>
+
+        <!-- Botão Deletar -->
+        <form action="{{ url_for('delete_analise', analise_id=a.id) }}" method="POST" style="display:inline;">
+          <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir esta análise?')" title="Excluir">
+            <i class="bi bi-trash"></i> Deletar
+          </button>
+        </form>
+
+        <!-- Botão para abrir o modal de Enviar E-mail -->
+        <button type="button" class="btn btn-primary btn-sm" onclick="abrirEmailModal('{{ a.id }}')" title="Enviar E-mail">
+          <i class="bi bi-envelope"></i> Enviar E-mail
+        </button>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+<script>
+// Exibir modal de e-mail com loading
+function abrirEmailModal(analiseId) {
+  const form = document.getElementById("formEmail");
+  form.action = "/enviar_email/" + analiseId;
+  document.getElementById("email_destino").value = "";
+  document.getElementById("emailLoading").style.display = "none";
+
+  const emailModal = new bootstrap.Modal(document.getElementById("emailModal"));
+  emailModal.show();
+
+  form.addEventListener("submit", function() {
+    document.getElementById("emailLoading").style.display = "block";
+  }, { once: true });
+}
+
+// Exibir modal de detalhes
+function abrirDetalhesPopup(analiseId) {
+  document.getElementById("detalhesIframe").src = "/detalhe_popup/" + analiseId;
+  new bootstrap.Modal(document.getElementById("detalhesModal")).show();
+}
+</script>
+
+{% endblock %}
